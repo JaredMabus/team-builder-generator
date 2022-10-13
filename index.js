@@ -4,7 +4,7 @@ const Team = require("./lib/Team");
 const { Employee, Manager, Engineer, Intern } = require("./lib/Employee");
 
 // Prompt user for employee info
-const getEmployeeInfo = async (employeeType) => {
+const getEmployeeInfo = async (employeeRole) => {
     // Dynamically choose a class
     const classOptions = {
         'Manager': Manager,
@@ -13,9 +13,8 @@ const getEmployeeInfo = async (employeeType) => {
     };
 
     // Initalize class without args using classOptions object 
-    const employee = new classOptions[employeeType]();
+    const employee = new classOptions[employeeRole]();
 
-    // TODO: Think of way to have each class have an additional question for officeNum, gitHub, and school
     // Get employee info from prompts and load questions from class object
     const employeeInfo = await inquirer.prompt(employee.getQuestions());
 
@@ -29,32 +28,52 @@ const getEmployeeInfo = async (employeeType) => {
 }
 
 
-// Add another team member
+// Prompt user if they want to add another team member
 const addTeamMember = async (team) => {
-    let addMember = await inquirer.prompt([
+    let answer = await inquirer.prompt([
         {
-            type: "input",
+            type: "list",
             name: "value",
+            message: "Add another team member?",
             choices: ["Engineer", "Intern", "Finished Building Team"]
         }
     ]);
 
-    if (addMember !== "Finished Building Team") {
-        const newMember = await getEmployeeInfo(addMember.value);
-        team.addTeamMember(newMember);
-        addTeamMember();
-    } else {
-        console.log(addMember.value);
+    // Return false if finished building team
+    if (answer.value === "Finished Building Team") {
+        console.log(answer.value);
+        return false;
     };
+
+    // Pass employee role to get employee info 
+    const newMember = await getEmployeeInfo(answer.value);
+
+    // Add member to Team and return team object
+    team.addMember(newMember);
     return team;
 }
 
-
 // Initialize app
 const init = async () => {
-    const team = new Team("New Team");
+    // Instantiate new Team object
+    let team = new Team("New Team");
+
+    // Get manager info and add to team
     const manager = await getEmployeeInfo("Manager");
     team.addMember(manager);
+
+    // Add other team members
+    let addNewMember = await addTeamMember(team);
+
+    while (addNewMember !== false) {
+        addNewMember = await addTeamMember(team);
+        if (addNewMember !== false) {
+            team = addNewMember;
+        } else {
+            break;
+        }
+    };
+
     console.log(team);
 }
 
