@@ -17,7 +17,8 @@ describe("Manager Class Test", () => {
     })
     // Test Manager Methods
     describe("Test class methods", () => {
-        const manager = new Manager(0, "Gladriel", "gladriel@middleEarth.com");
+        const manager = new Manager(0, "Gladriel", "gladriel@middleEarth.com", 10);
+
         it("Check value of getName method returns correct property value", () => {
             expect(manager.getName()).toEqual(manager.name);
         });
@@ -26,6 +27,9 @@ describe("Manager Class Test", () => {
         });
         it("Check value of getEmail method returns correct property value", () => {
             expect(manager.getEmail()).toEqual(manager.email);
+        });
+        it("Check value of getOfficeNum method returns correct property value", () => {
+            expect(manager.getOfficeNum()).toEqual(manager.officeNum);
         });
         it("Assert getRole method returns manager", () => {
             expect(manager.getRole()).toEqual("Manager");
