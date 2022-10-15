@@ -17,11 +17,11 @@ describe("Team Class Test", () => {
         const team = new Team("New Team");
         const employee = new Employee(0, "Gandalf", "gandalf@middleEarth.com");
 
+
         it("Check length of team members array after addMember method adds a new member", () => {
             team.addMember(employee);
             expect(team.members.length).toEqual(1);
             expect(team.members).toBeInstanceOf(Array);
         });
-
     })
 })

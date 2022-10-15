@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const Team = require("./lib/Team");
-const { Employee, Manager, Engineer, Intern } = require("./lib/Employee");
+const { Manager, Engineer, Intern } = require("./lib/Employee");
 
 // Prompt user for employee info
 const getEmployeeInfo = async (employeeRole) => {
@@ -26,7 +26,6 @@ const getEmployeeInfo = async (employeeRole) => {
     // Return employee object to be added to Team Class
     return employee;
 }
-
 
 // Prompt user if they want to add another team member
 const addTeamMember = async (team) => {
@@ -56,7 +55,7 @@ const addTeamMember = async (team) => {
 // Initialize app
 const init = async () => {
     // Instantiate new Team object
-    let team = new Team("New Team");
+    let team = new Team("My Team");
 
     // Get manager info and add to team
     const manager = await getEmployeeInfo("Manager");
@@ -74,7 +73,8 @@ const init = async () => {
         }
     };
 
-    console.log(team);
+    // Generate HTML and CSS
+    team.generateHTML()
 }
 
 init()
